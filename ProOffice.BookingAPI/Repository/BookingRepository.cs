@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProOffice.BookingAPI.DbContexts;
 using ProOffice.BookingAPI.Models;
 using ProOffice.BookingAPI.Models.Dto;
+using ProOffice.ValidationLogic;
 
 namespace ProOffice.BookingAPI.Repository
 {
@@ -10,23 +11,24 @@ namespace ProOffice.BookingAPI.Repository
     {
         private ApplicationDbContext _db;
         private IMapper _mapper;
+        private IValidate _validate;
 
-        public BookingRepository(ApplicationDbContext db, IMapper mapper, HttpClient httpClient)
+        public BookingRepository(ApplicationDbContext db, IMapper mapper, IValidate validate)
         {
             _db = db;
             _mapper = mapper;
+            _validate = validate;
         }
 
 
-        public async Task<object> BookResource(BookingDto bookingDto, ResourceDto resourceDto)
+        public async Task<BookingDto> BookResource(BookingDto bookingDto, ResourceDto resourceDto)
         {
             var booking = _mapper.Map<BookingDto, Booking>(bookingDto);
-            // find if there is a booked reservation for that resource
-            var bookedResourceDto = await _db.Bookings.FirstOrDefaultAsync(x => x.ResourceId == bookingDto.ResourceId);
-            // if there isn't:
-            if (bookedResourceDto == null)
+
+            var bookedResources = _db.Bookings.Where(x => x.ResourceId == bookingDto.ResourceId).ToList();
+
+            if (bookedResources == null)
             {
-                //and the booked quantity is smaller that the quantity we have in stock:
                 if (resourceDto.Quantity >= bookingDto.BookedQuantity)
                 {
                     _db.Bookings.Add(booking);
@@ -37,9 +39,19 @@ namespace ProOffice.BookingAPI.Repository
                 }
                 return new BookingDto();
             }
-            else // if there is a booked reservation for that resource
+            else
             {
-                if (bookingDto.BookedQuantity + bookedResourceDto.BookedQuantity <= resourceDto.Quantity)
+                var alreadyBookedTimeSlots = bookedResources.Select(x => new TimeSlot { DateFrom = x.DateFrom, DateTo = x.DateTo }).ToList();
+
+                bool isResourceAvailableForTheDateRange =
+                    _validate.isRequestedTimeRangeAvailable(bookingDto.DateFrom, bookingDto.DateTo, alreadyBookedTimeSlots);
+
+                if (!isResourceAvailableForTheDateRange)
+                {
+                    return new BookingDto();
+                }
+
+                if (bookingDto.BookedQuantity <= resourceDto.Quantity)
                 {
                     _db.Bookings.Add(booking);
 
@@ -49,8 +61,6 @@ namespace ProOffice.BookingAPI.Repository
                 }
                 return new BookingDto();
             }
-            // another check needs to be done if the resource is booked for that requested period. If it's booked then it can not
-            // be be booked again no metter the quantity, if it booked but not for that period, then we are checking quantity.
         }
     }
 }

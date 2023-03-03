@@ -4,6 +4,6 @@ namespace ProOffice.BookingAPI.Repository
 {
     public interface IBookingRepository
     {
-        Task<object> BookResource(BookingDto bookingDto, ResourceDto resourceDto);
+        Task<BookingDto> BookResource(BookingDto bookingDto, ResourceDto resourceDto);
     }
 }

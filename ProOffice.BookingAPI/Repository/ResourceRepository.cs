@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ProOffice.BookingAPI.Repository
 {
-    public class ResourceRepository: IResourceRepository
+    public class ResourceRepository : IResourceRepository
     {
         private ApplicationDbContext _db;
         private IMapper _mapper;
@@ -21,12 +21,16 @@ namespace ProOffice.BookingAPI.Repository
         public async Task<ResourceDto> GetResourceDtoById(int id)
         {
             var response = await _httpClient.GetAsync($"api/resources/{id}");
+
             var apiContent = await response.Content.ReadAsStringAsync();
-            var resp = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
-            if (resp.IsRequestSuccessful)
+
+            var responseDtoObj = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
+
+            if (responseDtoObj.IsRequestSuccessful)
             {
-                return JsonConvert.DeserializeObject<ResourceDto>(Convert.ToString(resp.Result));
+                return JsonConvert.DeserializeObject<ResourceDto>(Convert.ToString(responseDtoObj.Result));
             }
+
             return new ResourceDto();
         }
         public async Task<bool> UpdateResource(ResourceDto resourceDto)
@@ -34,16 +38,22 @@ namespace ProOffice.BookingAPI.Repository
             try
             {
                 var resourceDtoJson = JsonConvert.SerializeObject(resourceDto);
+
                 var content = new StringContent(resourceDtoJson, Encoding.UTF8, "application/json");
+
                 var responseFromApi = await _httpClient.PutAsync($"api/resources", content);
+
                 var apiContent = await responseFromApi.Content.ReadAsStringAsync();
+
                 var responseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+
                 return false;
             }
-            
+
             return true;
         }
     }

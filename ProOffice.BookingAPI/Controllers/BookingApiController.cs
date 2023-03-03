@@ -18,12 +18,12 @@ namespace ProOffice.ResourceAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<object> Post([FromBody] BookingDto bookingDto)
+        public async Task<ResponseDto> Post([FromBody] BookingDto bookingDto)
         {
             try
             {
                 var isBookingSuccessfull = await _bookResourceService.BookResourceAndUpdateResourceQuantity(bookingDto);
-                
+
                 _response.Result = isBookingSuccessfull;
             }
             catch (Exception ex)

@@ -19,14 +19,14 @@ namespace ProOffice.ResourceAPI.Repository
         public async Task<ResourceDto> GetResourceById(int id)
         {
             var resource = await _db.Resources.FirstOrDefaultAsync(r => r.Id == id);
-            
+
             return _mapper.Map<ResourceDto>(resource);
         }
 
         public async Task<IEnumerable<ResourceDto>> GetResources()
         {
             IEnumerable<Resource> resources = await _db.Resources.ToListAsync();
-            
+
             return _mapper.Map<List<ResourceDto>>(resources);
         }
 

@@ -16,7 +16,7 @@ namespace ProOffice.ResourceAPI.Controllers
             _response = new ResponseDto();
         }
         [HttpGet]
-        public async Task<object> Get()
+        public async Task<ResponseDto> Get()
         {
             try
             {
@@ -32,7 +32,7 @@ namespace ProOffice.ResourceAPI.Controllers
         }
         [HttpGet]
         [Route("{id}")]
-        public async Task<object> Get(int id)
+        public async Task<ResponseDto> Get(int id)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace ProOffice.ResourceAPI.Controllers
             return _response;
         }
         [HttpPut]
-        public async Task<object> Update([FromBody] ResourceDto resourceDto)
+        public async Task<ResponseDto> Update([FromBody] ResourceDto resourceDto)
         {
             try
             {

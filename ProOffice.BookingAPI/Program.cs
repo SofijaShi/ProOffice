@@ -4,6 +4,7 @@ using ProOffice.BookingAPI;
 using ProOffice.BookingAPI.DbContexts;
 using ProOffice.BookingAPI.Repository;
 using ProOffice.BookingAPI.Services;
+using ProOffice.ValidationLogic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddScoped<IBookResourceService, BookResourceService>();
-builder.Services.AddHttpClient<IBookingRepository, BookingRepository>(u => u.BaseAddress = new Uri("https://localhost:7253"));
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IValidate, Validate>();
 builder.Services.AddHttpClient<IResourceRepository, ResourceRepository>(u => u.BaseAddress = new Uri("https://localhost:7253"));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddCors(options =>

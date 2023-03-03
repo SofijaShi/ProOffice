@@ -13,18 +13,18 @@ namespace ProOffice.BookingAPI.Services
             _bookingRepository = bookingRepository;
             _resourceRepository = resourceRepository;
         }
-        
+
         public async Task<bool> BookResourceAndUpdateResourceQuantity(BookingDto bookingDto)
         {
             var resourceDto = await _resourceRepository.GetResourceDtoById(bookingDto.ResourceId);
-            if (resourceDto == null)
+            if (resourceDto.Id < 1)
             {
                 return false;
             }
             else
             {
-                var bookedDto = await _bookingRepository.BookResource(bookingDto, resourceDto);
-                if (bookedDto == null)
+                BookingDto bookedDto = await _bookingRepository.BookResource(bookingDto, resourceDto);
+                if (bookedDto.ResourceId < 1)
                 {
                     return false;
                 }
@@ -32,9 +32,9 @@ namespace ProOffice.BookingAPI.Services
                 {
                     resourceDto.Quantity -= bookingDto.BookedQuantity;
                     bool isUpdateSuccesfull = await _resourceRepository.UpdateResource(resourceDto);
-                    
+
                     return isUpdateSuccesfull;
-                }         
+                }
             }
         }
     }
