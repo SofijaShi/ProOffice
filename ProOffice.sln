@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProOffice.ResourceAPI", "ProOffice.ResourceAPI\ProOffice.ResourceAPI.csproj", "{3019F4A0-A865-4A65-9516-7B395D484536}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProOffice.BookingAPI", "ProOffice.BookingAPI\ProOffice.BookingAPI.csproj", "{7F36F54E-4F4A-48EA-B3A7-ECFBEC3F008B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3019F4A0-A865-4A65-9516-7B395D484536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3019F4A0-A865-4A65-9516-7B395D484536}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3019F4A0-A865-4A65-9516-7B395D484536}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3019F4A0-A865-4A65-9516-7B395D484536}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F36F54E-4F4A-48EA-B3A7-ECFBEC3F008B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F36F54E-4F4A-48EA-B3A7-ECFBEC3F008B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F36F54E-4F4A-48EA-B3A7-ECFBEC3F008B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F36F54E-4F4A-48EA-B3A7-ECFBEC3F008B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {00C87DA9-20C0-427F-9346-9A0F2712D695}
+	EndGlobalSection
+EndGlobal
