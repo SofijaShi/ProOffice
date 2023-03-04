@@ -6,17 +6,21 @@
         {
             foreach (var timeSlot in alreadyBookedTimeSlots)
             {
-                if (requestedStartDate >= timeSlot.DateFrom && requestedStartDate <= timeSlot.DateTo)
+                if (requestedStartDate.Date > requestedEndDate.Date)
+                {
+                    return false;
+                }
+                if (requestedStartDate.Date >= timeSlot.DateFrom.Date && requestedStartDate.Date <= timeSlot.DateTo.Date)
                 {
                     return false;
                 }
 
-                if (requestedEndDate >= timeSlot.DateFrom && requestedEndDate <= timeSlot.DateTo)
+                if (requestedEndDate.Date >= timeSlot.DateFrom.Date && requestedEndDate.Date <= timeSlot.DateTo.Date)
                 {
                     return false;
                 }
 
-                if (requestedStartDate <= timeSlot.DateFrom && requestedEndDate >= timeSlot.DateTo)
+                if (requestedStartDate.Date <= timeSlot.DateFrom.Date && requestedEndDate.Date >= timeSlot.DateTo.Date)
                 {
                     return false;
                 }

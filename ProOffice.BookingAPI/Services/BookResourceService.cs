@@ -16,6 +16,10 @@ namespace ProOffice.BookingAPI.Services
 
         public async Task<bool> BookResourceAndUpdateResourceQuantity(BookingDto bookingDto)
         {
+            if(bookingDto == null)
+            {
+                return false;
+            }
             var resourceDto = await _resourceRepository.GetResourceDtoById(bookingDto.ResourceId);
             if (resourceDto.Id < 1)
             {

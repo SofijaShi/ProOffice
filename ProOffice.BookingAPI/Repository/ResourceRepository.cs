@@ -8,30 +8,36 @@ namespace ProOffice.BookingAPI.Repository
 {
     public class ResourceRepository : IResourceRepository
     {
-        private ApplicationDbContext _db;
-        private IMapper _mapper;
         private readonly HttpClient _httpClient;
 
         public ResourceRepository(ApplicationDbContext db, IMapper mapper, HttpClient httpClient)
         {
-            _db = db;
-            _mapper = mapper;
             _httpClient = httpClient;
         }
         public async Task<ResourceDto> GetResourceDtoById(int id)
         {
-            var response = await _httpClient.GetAsync($"api/resources/{id}");
-
-            var apiContent = await response.Content.ReadAsStringAsync();
-
-            var responseDtoObj = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
-
-            if (responseDtoObj.IsRequestSuccessful)
+            try
             {
-                return JsonConvert.DeserializeObject<ResourceDto>(Convert.ToString(responseDtoObj.Result));
-            }
+                var response = await _httpClient.GetAsync($"api/resources/{id}");
 
-            return new ResourceDto();
+                var apiContent = await response.Content.ReadAsStringAsync();
+
+                var responseDtoObj = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
+
+                if (responseDtoObj.IsRequestSuccessful)
+                {
+                    return JsonConvert.DeserializeObject<ResourceDto>(Convert.ToString(responseDtoObj.Result));
+                }
+                else
+                {
+                    throw new Exception(responseDtoObj.ErrorMessages.ToString());
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occured while processing the request", ex);
+            }
         }
         public async Task<bool> UpdateResource(ResourceDto resourceDto)
         {
@@ -49,9 +55,7 @@ namespace ProOffice.BookingAPI.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-
-                return false;
+                throw new Exception("An error occured while processing the request", ex);
             }
 
             return true;
