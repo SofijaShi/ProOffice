@@ -21,7 +21,7 @@ namespace ProOffice.BookingAPI.Repository
         }
 
 
-        public async Task<BookingDto> BookResource(BookingDto bookingDto, ResourceDto resourceDto)
+        public async Task<Booking?> BookResource(BookingDto bookingDto, ResourceDto resourceDto)
         {
             var booking = _mapper.Map<BookingDto, Booking>(bookingDto);
 
@@ -35,9 +35,9 @@ namespace ProOffice.BookingAPI.Repository
 
                     await _db.SaveChangesAsync();
 
-                    return bookingDto;
+                    return booking;
                 }
-                return new BookingDto();
+                return null;
             }
             else
             {
@@ -48,7 +48,7 @@ namespace ProOffice.BookingAPI.Repository
 
                 if (!isResourceAvailableForTheDateRange)
                 {
-                    return new BookingDto();
+                    return null;
                 }
 
                 if (bookingDto.BookedQuantity <= resourceDto.Quantity)
@@ -57,9 +57,9 @@ namespace ProOffice.BookingAPI.Repository
 
                     await _db.SaveChangesAsync();
 
-                    return bookingDto;
+                    return booking;
                 }
-                return new BookingDto();
+                return null;
             }
         }
     }

@@ -11,7 +11,7 @@ namespace ProOffice.ResourceAPI.Controllers
         private IBookResourceService _bookResourceService;
         protected ResponseDto _response;
 
-        public BookingApiController(IBookResourceService bookResourceService)
+        public BookingApiController(IBookResourceService bookResourceService, IMessageSenderService messageSenderService)
         {
             _bookResourceService = bookResourceService;
             _response = new ResponseDto();

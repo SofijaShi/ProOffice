@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddScoped<IBookResourceService, BookResourceService>();
+builder.Services.AddScoped<IMessageSenderService, MessageSenderService>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IValidate, Validate>();
 builder.Services.AddHttpClient<IResourceRepository, ResourceRepository>(u => u.BaseAddress = new Uri("https://localhost:7253"));
