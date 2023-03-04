@@ -10,7 +10,6 @@ namespace ProOffice.BookingAPI
         {
             var mappingConfig = new MapperConfiguration(config =>
             {
-                config.CreateMap<ResourceDto, Resource>().ReverseMap();
                 config.CreateMap<BookingDto, Booking>().ReverseMap();
             });
 
